@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Seguro - TechStore</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+        .product-section {
+            display: flex;
+            flex-direction: column;
+        }
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 100px;
+        }
+        .product-details h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .product-desc {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        .spec-item {
+            display: flex;
+            gap: 10px;
+            margin: 8px 0;
+            font-size: 13px;
+        }
+        .price {
+            font-size: 32px;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .form-section h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .security {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            font-size: 13px;
+            color: #667eea;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 14px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        .summary {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 16px;
+            padding-top: 8px;
+            border-top: 1px solid #ddd;
+            color: #667eea;
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔒 Pago Seguro</h1>
+            <p>Completa tu compra de forma segura</p>
+        </div>
+
+        <div class="content">
+            <div class="product-section">
+                <a href="index.html" class="back-link">← Volver a la tienda</a>
+                <div class="product-image">📱</div>
+                <div class="product-details">
+                    <h2>iPhone 15 Pro</h2>
+                    <div class="product-desc">
+                        El iPhone 15 Pro combina diseño titanio, cámara avanzada y el chip A18 Pro más potente.
+                    </div>
+                    <div style="margin: 20px 0;">
+                        <div class="spec-item"><span>📱</span><span>Pantalla 6.1" Super Retina XDR</span></div>
+                        <div class="spec-item"><span>🔋</span><span>Batería hasta 28 horas</span></div>
+                        <div class="spec-item"><span>📷</span><span>Cámara 48MP + Teleobjetivo</span></div>
+                        <div class="spec-item"><span>⚡</span><span>Chip A18 Pro</span></div>
+                        <div class="spec-item"><span>🎨</span><span>4 colores premium</span></div>
+                    </div>
+                    <div class="price">$999.99</div>
+                    <div class="summary">
+                        <div class="summary-row"><span>Subtotal</span><span>$999.99</span></div>
+                        <div class="summary-row"><span>Envío</span><span>Gratis</span></div>
+                        <div class="summary-row"><span>Impuestos</span><span>Calculados al finalizar</span></div>
+                        <div class="summary-row total"><span>Total aproximado</span><span>$999.99</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <form id="purchaseForm" onsubmit="submitForm(event)">
+                    <h3>📋 Datos Personales</h3>
+                    <div class="form-group">
+                        <label>Nombre Completo *</label>
+                        <input type="text" placeholder="Juan Pérez" required>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" placeholder="juan@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono *</label>
+                            <input type="tel" placeholder="+57 3001234567" required>
+                        </div>
+                    </div>
+
+                    <h3>📍 Dirección de Envío</h3>
+                    <div class="form-group">
+                        <label>País *</label>
+                        <select required>
+                            <option value="">Selecciona un país</option>
+                            <option value="CO">Colombia</option>
+                            <option value="AR">Argentina</option>
+                            <option value="PE">Perú</option>
+                            <option value="CL">Chile</option>
+                            <option value="MX">México</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Dirección Completa *</label>
+                        <input type="text" placeholder="Calle 45 #12-34, Apto 301" required>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Ciudad *</label>
+                            <input type="text" placeholder="Bogotá" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Código Postal *</label>
+                            <input type="text" placeholder="110111" required>
+                        </div>
+                    </div>
+
+                    <h3>💳 Información de Pago</h3>
+                    <div class="form-group">
+                        <label>Número de Tarjeta *</label>
+                        <input type="text" placeholder="4532 1488 0343 6467" maxlength="19" id="cardNumber" onkeyup="formatCardNumber(this)" required>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Vencimiento (MM/YY) *</label>
+                            <input type="text" placeholder="12/25" maxlength="5" id="expiry" onkeyup="formatExpiry(this)" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CVV *</label>
+                            <input type="text" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre en la Tarjeta *</label>
+                        <input type="text" placeholder="JUAN PEREZ" style="text-transform: uppercase;" required>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">Acepto los términos y condiciones de compra</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="privacy">
+                        <label for="privacy">Quiero recibir ofertas especiales y promociones</label>
+                    </div>
+
+                    <div class="security">
+                        <div style="font-size: 20px;">🔒</div>
+                        <div>Tus datos están protegidos con encriptación SSL de 256 bits</div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="reset" class="btn btn-secondary">Limpiar</button>
+                        <button type="submit" class="btn btn-primary">💳 Finalizar Compra</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div style="background: #f9f9f9; padding: 20px; text-align: center; color: #666; font-size: 12px;">
+            <p>© 2026 TechStore - Todos los derechos reservados</p>
+        </div>
+    </div>
+
+    <script>
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '');
+            let formattedValue = value.replace(/(\d{4})/g, '$1 ').trim();
+            input.value = formattedValue;
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const cardNumber = event.target.querySelector('#cardNumber').value.replace(/\s/g, '');
+            if (cardNumber.length !== 16) {
+                alert('Por favor, ingresa un número de tarjeta válido (16 dígitos)');
+                return;
+            }
+            const orderNumber = 'ORD-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+            alert('¡Gracias por tu compra! 🎉\n\nNúmero de orden: ' + orderNumber + '\n\nRecibirás un email de confirmación en breve.');
+            event.target.reset();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
